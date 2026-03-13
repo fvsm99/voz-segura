@@ -6,6 +6,7 @@
     <title>Voz Segura - Denúncia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* O CSS continua exatamente o mesmo */
         :root { --cor-fundo: #F3F6F8; --cor-primaria: #2563EB; --cor-texto: #1F2937; --cor-card: #FFFFFF; --cor-borda: #E5E7EB; --cor-erro: #EF4444; }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--cor-fundo); color: var(--cor-texto); margin: 0; padding: 20px 20px 100px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; box-sizing: border-box; overflow-x: hidden; }
@@ -44,10 +45,11 @@
         .text-area-custom { width: 100%; height: 150px; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda); font-family: 'Inter', sans-serif; font-size: 15px; box-sizing: border-box; resize: vertical; margin-bottom: 20px; transition: border 0.3s; }
         .text-area-custom:focus { outline: none; border-color: var(--cor-primaria); }
 
+        .area-desenvolvimento { padding: 40px 20px; background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; margin-bottom: 20px; color: #6B7280; font-weight: 500; }
+
         .btn-enviar { width: 100%; padding: 16px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: background-color 0.2s; }
         .btn-enviar:hover { background-color: #1D4ED8; }
 
-        /* RODAPÉ E BOTÕES INFERIORES */
         .btn-disque-fixo { position: fixed; bottom: 20px; left: 20px; z-index: 30; }
         .link-disque100 { background-color: var(--cor-erro); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); transition: all 0.2s ease; }
         .link-disque100:hover { background-color: #DC2626; transform: translateY(-2px); }
@@ -56,7 +58,6 @@
         .logo-seducpi { height: 60px; width: auto; object-fit: contain; transition: transform 0.3s ease; display: block; }
         .logo-seducpi:hover { transform: scale(1.05); }
 
-        /* BOTÃO WHATSAPP POLÍCIA ESCOLAR */
         .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 100; background-color: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); transition: all 0.3s ease; }
         .btn-whatsapp:hover { transform: scale(1.1) translateY(-2px); background-color: #128C7E; }
         
@@ -94,30 +95,29 @@
         <p>Seu espaço seguro. Escolha como prefere relatar:</p>
 
         <div class="tabs">
-            <button class="tab-btn ativo">✍️ Texto</button>
-            <button class="tab-btn">🎤 Áudio</button>
-            <button class="tab-btn">🤟 Libras</button>
+            <button class="tab-btn ativo" id="tab-texto" onclick="mudarAba('texto')">✍️ Texto</button>
+            <button class="tab-btn" id="tab-audio" onclick="mudarAba('audio')">🎤 Áudio</button>
+            <button class="tab-btn" id="tab-libras" onclick="mudarAba('libras')">🤟 Libras</button>
         </div>
 
-        <label class="campo-label">Descreva o que aconteceu:</label>
-        <textarea class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
+        <label class="campo-label" id="label-dinamica">Descreva o que aconteceu:</label>
+        
+        <div id="area-input-dinamica">
+            <textarea id="texto-relato" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
+        </div>
 
-        <button class="btn-enviar">Enviar Relato Escrito</button>
+        <button class="btn-enviar" id="btn-enviar-relato" onclick="enviarRelato()">Enviar Relato Escrito</button>
     </div>
 
     <a href="https://wa.me/5586994850192" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" title="Falar com a Polícia Escolar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="currentColor">
-            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
     </a>
-
     <div class="btn-disque-fixo">
         <a href="https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos" target="_blank" rel="noopener noreferrer" class="link-disque100">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
             Disque 100 - Denunciar Violação
         </a>
     </div>
-
     <div class="logos-centro">
         <a href="https://seduc.pi.gov.br/" target="_blank" rel="noopener noreferrer">
             <img src="seducpi.png" alt="Seduc PI" class="logo-seducpi" onerror="this.src='https://via.placeholder.com/200x50?text=SEDUC+PI'">
@@ -126,6 +126,59 @@
 
     <script>
         function alternarMenu() { document.getElementById('menuLateral').classList.toggle('ativa'); document.getElementById('fundoEscuro').classList.toggle('ativa'); }
+
+        function mudarAba(abaClicada) {
+            // 1. Remove a cor de "ativo" de todos os botões
+            document.getElementById('tab-texto').classList.remove('ativo');
+            document.getElementById('tab-audio').classList.remove('ativo');
+            document.getElementById('tab-libras').classList.remove('ativo');
+
+            // 2. Adiciona a cor de "ativo" no botão que foi clicado
+            document.getElementById(`tab-${abaClicada}`).classList.add('ativo');
+
+            const labelArea = document.getElementById('label-dinamica');
+            const inputArea = document.getElementById('area-input-dinamica');
+            const btnEnviar = document.getElementById('btn-enviar-relato');
+
+            // 3. Muda o conteúdo da tela de acordo com a aba escolhida
+            if (abaClicada === 'texto') {
+                labelArea.innerText = 'Descreva o que aconteceu:';
+                inputArea.innerHTML = '<textarea id="texto-relato" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>';
+                btnEnviar.innerText = 'Enviar Relato Escrito';
+                btnEnviar.style.display = 'block'; // Mostra o botão de enviar
+            } else if (abaClicada === 'audio') {
+                labelArea.innerText = 'Grave seu relato em áudio:';
+                inputArea.innerHTML = '<div class="area-desenvolvimento">🎙️ Clique no botão abaixo para gravar.<br><small>(Funcionalidade visual simulada)</small></div>';
+                btnEnviar.innerText = '🔴 Iniciar Gravação';
+            } else if (abaClicada === 'libras') {
+                labelArea.innerText = 'Envie seu vídeo em Libras:';
+                inputArea.innerHTML = '<div class="area-desenvolvimento">📷 A câmera abrirá aqui para gravação.<br><small>(Funcionalidade visual simulada)</small></div>';
+                btnEnviar.innerText = 'Abrir Câmera';
+            }
+        }
+
+        function enviarRelato() {
+            const abaAtiva = document.querySelector('.tab-btn.ativo').id;
+
+            if (abaAtiva === 'tab-texto') {
+                const textarea = document.getElementById('texto-relato');
+                
+                // Verifica se o usuário digitou algo
+                if (textarea.value.trim() === '') {
+                    alert('⚠️ Por favor, escreva algo antes de enviar o relato.');
+                    return; // Para a função aqui
+                }
+
+                // Simula o envio bem-sucedido
+                alert('✅ Relato enviado com sucesso!\n\nSua mensagem foi registrada de forma segura e anônima. A equipe responsável foi notificada.\n\nLembre-se: você não está sozinho.');
+                
+                // Limpa a caixa de texto
+                textarea.value = '';
+            } else {
+                // Mensagem genérica para as abas de áudio e libras (já que são simulações)
+                alert('🛠️ Esta função (Gravação de Áudio/Vídeo) está em desenvolvimento para a versão final do sistema.');
+            }
+        }
     </script>
 </body>
 </html>
