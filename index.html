@@ -6,7 +6,6 @@
     <title>Voz Segura - Denúncia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* O CSS continua exatamente o mesmo */
         :root { --cor-fundo: #F3F6F8; --cor-primaria: #2563EB; --cor-texto: #1F2937; --cor-card: #FFFFFF; --cor-borda: #E5E7EB; --cor-erro: #EF4444; }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--cor-fundo); color: var(--cor-texto); margin: 0; padding: 20px 20px 100px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; box-sizing: border-box; overflow-x: hidden; }
@@ -45,7 +44,13 @@
         .text-area-custom { width: 100%; height: 150px; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda); font-family: 'Inter', sans-serif; font-size: 15px; box-sizing: border-box; resize: vertical; margin-bottom: 20px; transition: border 0.3s; }
         .text-area-custom:focus { outline: none; border-color: var(--cor-primaria); }
 
-        .area-desenvolvimento { padding: 40px 20px; background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; margin-bottom: 20px; color: #6B7280; font-weight: 500; }
+        .file-input-container { background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; padding: 30px 20px; margin-bottom: 20px; transition: all 0.2s; }
+        .file-input-container:hover { border-color: var(--cor-primaria); background: #EFF6FF; }
+        input[type="file"] { font-size: 15px; color: #4B5563; cursor: pointer; width: 100%; }
+
+        /* Esconde as abas que não estão selecionadas */
+        .conteudo-aba { display: none; }
+        .conteudo-aba.ativo { display: block; }
 
         .btn-enviar { width: 100%; padding: 16px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: background-color 0.2s; }
         .btn-enviar:hover { background-color: #1D4ED8; }
@@ -95,18 +100,34 @@
         <p>Seu espaço seguro. Escolha como prefere relatar:</p>
 
         <div class="tabs">
-            <button class="tab-btn ativo" id="tab-texto" onclick="mudarAba('texto')">✍️ Texto</button>
-            <button class="tab-btn" id="tab-audio" onclick="mudarAba('audio')">🎤 Áudio</button>
-            <button class="tab-btn" id="tab-libras" onclick="mudarAba('libras')">🤟 Libras</button>
+            <button type="button" class="tab-btn ativo" id="tab-texto" onclick="mudarAba('texto')">✍️ Texto</button>
+            <button type="button" class="tab-btn" id="tab-audio" onclick="mudarAba('audio')">🎤 Áudio</button>
+            <button type="button" class="tab-btn" id="tab-libras" onclick="mudarAba('libras')">🤟 Libras</button>
         </div>
 
-        <label class="campo-label" id="label-dinamica">Descreva o que aconteceu:</label>
-        
-        <div id="area-input-dinamica">
-            <textarea id="texto-relato" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
-        </div>
+        <form action="LINK_AQUI" method="POST" enctype="multipart/form-data">
+            
+            <div id="conteudo-texto" class="conteudo-aba ativo">
+                <label class="campo-label">Descreva o que aconteceu:</label>
+                <textarea name="relato_escrito" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
+            </div>
 
-        <button class="btn-enviar" id="btn-enviar-relato" onclick="enviarRelato()">Enviar Relato Escrito</button>
+            <div id="conteudo-audio" class="conteudo-aba">
+                <label class="campo-label">Grave seu relato em áudio:</label>
+                <div class="file-input-container">
+                    <input type="file" name="relato_audio" accept="audio/*" capture="microphone">
+                </div>
+            </div>
+
+            <div id="conteudo-libras" class="conteudo-aba">
+                <label class="campo-label">Grave seu vídeo em Libras:</label>
+                <div class="file-input-container">
+                    <input type="file" name="relato_video" accept="video/*" capture="environment">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-enviar">Enviar Relato de Forma Segura</button>
+        </form>
     </div>
 
     <a href="https://wa.me/5586994850192" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" title="Falar com a Polícia Escolar">
@@ -128,56 +149,19 @@
         function alternarMenu() { document.getElementById('menuLateral').classList.toggle('ativa'); document.getElementById('fundoEscuro').classList.toggle('ativa'); }
 
         function mudarAba(abaClicada) {
-            // 1. Remove a cor de "ativo" de todos os botões
+            // Remove a classe ativo dos botões
             document.getElementById('tab-texto').classList.remove('ativo');
             document.getElementById('tab-audio').classList.remove('ativo');
             document.getElementById('tab-libras').classList.remove('ativo');
+            
+            // Esconde todos os conteúdos
+            document.getElementById('conteudo-texto').classList.remove('ativo');
+            document.getElementById('conteudo-audio').classList.remove('ativo');
+            document.getElementById('conteudo-libras').classList.remove('ativo');
 
-            // 2. Adiciona a cor de "ativo" no botão que foi clicado
+            // Ativa apenas a aba e o conteúdo clicado
             document.getElementById(`tab-${abaClicada}`).classList.add('ativo');
-
-            const labelArea = document.getElementById('label-dinamica');
-            const inputArea = document.getElementById('area-input-dinamica');
-            const btnEnviar = document.getElementById('btn-enviar-relato');
-
-            // 3. Muda o conteúdo da tela de acordo com a aba escolhida
-            if (abaClicada === 'texto') {
-                labelArea.innerText = 'Descreva o que aconteceu:';
-                inputArea.innerHTML = '<textarea id="texto-relato" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>';
-                btnEnviar.innerText = 'Enviar Relato Escrito';
-                btnEnviar.style.display = 'block'; // Mostra o botão de enviar
-            } else if (abaClicada === 'audio') {
-                labelArea.innerText = 'Grave seu relato em áudio:';
-                inputArea.innerHTML = '<div class="area-desenvolvimento">🎙️ Clique no botão abaixo para gravar.<br><small>(Funcionalidade visual simulada)</small></div>';
-                btnEnviar.innerText = '🔴 Iniciar Gravação';
-            } else if (abaClicada === 'libras') {
-                labelArea.innerText = 'Envie seu vídeo em Libras:';
-                inputArea.innerHTML = '<div class="area-desenvolvimento">📷 A câmera abrirá aqui para gravação.<br><small>(Funcionalidade visual simulada)</small></div>';
-                btnEnviar.innerText = 'Abrir Câmera';
-            }
-        }
-
-        function enviarRelato() {
-            const abaAtiva = document.querySelector('.tab-btn.ativo').id;
-
-            if (abaAtiva === 'tab-texto') {
-                const textarea = document.getElementById('texto-relato');
-                
-                // Verifica se o usuário digitou algo
-                if (textarea.value.trim() === '') {
-                    alert('⚠️ Por favor, escreva algo antes de enviar o relato.');
-                    return; // Para a função aqui
-                }
-
-                // Simula o envio bem-sucedido
-                alert('✅ Relato enviado com sucesso!\n\nSua mensagem foi registrada de forma segura e anônima. A equipe responsável foi notificada.\n\nLembre-se: você não está sozinho.');
-                
-                // Limpa a caixa de texto
-                textarea.value = '';
-            } else {
-                // Mensagem genérica para as abas de áudio e libras (já que são simulações)
-                alert('🛠️ Esta função (Gravação de Áudio/Vídeo) está em desenvolvimento para a versão final do sistema.');
-            }
+            document.getElementById(`conteudo-${abaClicada}`).classList.add('ativo');
         }
     </script>
 </body>
