@@ -42,7 +42,6 @@
         .text-area-custom { width: 100%; height: 150px; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda); font-family: 'Inter', sans-serif; font-size: 15px; box-sizing: border-box; resize: vertical; margin-bottom: 20px; }
         .text-area-custom:focus { outline: none; border-color: var(--cor-primaria); }
 
-        /* Estilos do Gravador */
         .gravador-container { background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
         .btn-gravar { background-color: var(--cor-erro); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 15px; cursor: pointer; margin: 10px 0; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
         .btn-gravar:hover { background-color: #DC2626; transform: scale(1.05); }
@@ -54,14 +53,13 @@
         video { width: 100%; border-radius: 12px; background-color: #000; margin-top: 10px; display: none; }
         audio { width: 100%; margin-top: 15px; display: none; }
         
-        #video-preview-camera { display: none; transform: scaleX(-1); /* Efeito espelho para gravar */ }
+        #video-preview-camera { display: none; transform: scaleX(-1); }
         #video-gravado { display: none; }
 
         .btn-enviar { width: 100%; padding: 16px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px;}
         .btn-enviar:hover { background-color: #1D4ED8; }
         .btn-enviar:disabled { background-color: #9CA3AF; cursor: not-allowed; }
 
-        /* Botões Flutuantes Mantidos */
         .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 100; background-color: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
         .btn-disque-fixo { position: fixed; bottom: 20px; left: 20px; z-index: 30; }
         .link-disque100 { background-color: var(--cor-erro); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); }
@@ -142,7 +140,6 @@
     <div class="logos-centro"><img src="seducpi.png" class="logo-seducpi" alt="SEDUC"></div>
 
     <script>
-        // MUDANÇA DE ABAS
         let abaAtiva = 'texto';
         function mudarAba(aba) {
             abaAtiva = aba;
@@ -155,11 +152,9 @@
         }
         function alternarMenu() { document.getElementById('menuLateral').classList.toggle('ativa'); document.getElementById('fundoEscuro').classList.toggle('ativa'); }
 
-        // VARIÁVEIS DE GRAVAÇÃO
         let mediaRecorderAudio; let pedacosAudio = []; let blobAudioFinal = null;
         let mediaRecorderVideo; let pedacosVideo = []; let blobVideoFinal = null; let streamVideoAtual = null;
 
-        // GRAVAÇÃO DE ÁUDIO
         async function iniciarAudio() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -191,7 +186,6 @@
             document.getElementById('btn-gravar-audio').innerText = "🔄 Gravar Novamente";
         }
 
-        // GRAVAÇÃO DE VÍDEO (LIBRAS)
         async function iniciarVideo() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -229,15 +223,14 @@
             document.getElementById('btn-gravar-video').innerText = "🔄 Gravar Novamente";
         }
 
-        // ENVIO DO FORMULÁRIO COM O FORMSPREE
         document.getElementById('formulario-denuncia').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Impede a página de recarregar
+            e.preventDefault(); 
             
             const btnSubmit = document.getElementById('btn-submit');
             btnSubmit.innerText = "Enviando... Aguarde";
             btnSubmit.disabled = true;
 
-            // COLE SEU LINK DO FORMSPREE AQUI DENTRO DAS ASPAS
+            // LINK DO FORMSPREE ATUALIZADO AQUI
             const FORMSPREE_URL = "https://formspree.io/f/xnjgzzvr";
 
             let formData = new FormData();
@@ -265,7 +258,6 @@
 
                 if (response.ok) {
                     alert("✅ Relato enviado com sucesso para a equipe!\n\nVocê está seguro. Sua voz foi ouvida.");
-                    // Limpar campos
                     document.getElementById('texto-relato').value = '';
                     blobAudioFinal = null; blobVideoFinal = null;
                     document.getElementById('player-audio').style.display = 'none';
@@ -273,7 +265,7 @@
                     document.getElementById('status-audio').innerText = "Clique em gravar para começar.";
                     document.getElementById('status-video').innerText = "Grave seu vídeo sinalizando.";
                 } else {
-                    alert("❌ Ocorreu um erro ao enviar. Verifique se você colocou o link do Formspree corretamente no código.");
+                    alert("❌ Ocorreu um erro ao enviar. Tente novamente.");
                 }
             } catch (error) {
                 alert("❌ Erro de conexão ao tentar enviar.");
