@@ -13,13 +13,9 @@
         .fundo-grade { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('gradient.png'); background-size: cover; background-position: center; z-index: -3; opacity: 0.9; }
         
         .link-logo { position: fixed; top: 20px; right: 20px; z-index: 1000; transition: transform 0.2s ease; }
-        .link-logo:hover { transform: scale(1.08); }
         .logo-escola { max-width: 100px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); display: block; }
         
         .btn-menu { position: fixed; top: 20px; left: 20px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; width: 50px; height: 50px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
-        .btn-menu:hover { transform: scale(1.05); }
-        .btn-menu svg { width: 28px; height: 28px; fill: currentColor; }
-        
         .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100vh; background-color: var(--cor-card); box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); z-index: 1001; transition: left 0.3s ease; display: flex; flex-direction: column; }
         .sidebar.ativa { left: 0; }
         .sidebar-header { padding: 30px 20px; background-color: #F8FAFC; border-bottom: 1px solid var(--cor-borda); display: flex; justify-content: space-between; align-items: center; }
@@ -27,8 +23,7 @@
         .btn-fechar { background: none; border: none; font-size: 28px; color: #6B7280; cursor: pointer; }
         .menu-links { list-style: none; padding: 0; margin: 0; }
         .menu-links li { border-bottom: 1px solid #F3F4F6; }
-        .menu-links a { display: flex; align-items: center; gap: 15px; padding: 20px; text-decoration: none; color: var(--cor-texto); font-weight: 600; font-size: 16px; transition: background-color 0.2s; }
-        .menu-links a:hover { background-color: #EFF6FF; color: var(--cor-primaria); }
+        .menu-links a { display: flex; align-items: center; gap: 15px; padding: 20px; text-decoration: none; color: var(--cor-texto); font-weight: 600; font-size: 16px; }
         .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s ease; }
         .overlay.ativa { display: block; opacity: 1; }
 
@@ -40,31 +35,38 @@
         .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; background: transparent; color: #4B5563; }
         .tab-btn.ativo { background-color: white; color: var(--cor-primaria); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        .campo-label { display: block; text-align: left; font-weight: 600; margin-bottom: 10px; font-size: 14px; color: var(--cor-texto); }
-        .text-area-custom { width: 100%; height: 150px; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda); font-family: 'Inter', sans-serif; font-size: 15px; box-sizing: border-box; resize: vertical; margin-bottom: 20px; transition: border 0.3s; }
+        .conteudo-aba { display: none; text-align: left; }
+        .conteudo-aba.ativo { display: block; }
+        .campo-label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 14px; color: var(--cor-texto); }
+        
+        .text-area-custom { width: 100%; height: 150px; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda); font-family: 'Inter', sans-serif; font-size: 15px; box-sizing: border-box; resize: vertical; margin-bottom: 20px; }
         .text-area-custom:focus { outline: none; border-color: var(--cor-primaria); }
 
-        .file-input-container { background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; padding: 30px 20px; margin-bottom: 20px; transition: all 0.2s; }
-        .file-input-container:hover { border-color: var(--cor-primaria); background: #EFF6FF; }
-        input[type="file"] { font-size: 15px; color: #4B5563; cursor: pointer; width: 100%; }
-
-        /* Esconde as abas que não estão selecionadas */
-        .conteudo-aba { display: none; }
-        .conteudo-aba.ativo { display: block; }
-
-        .btn-enviar { width: 100%; padding: 16px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: background-color 0.2s; }
-        .btn-enviar:hover { background-color: #1D4ED8; }
-
-        .btn-disque-fixo { position: fixed; bottom: 20px; left: 20px; z-index: 30; }
-        .link-disque100 { background-color: var(--cor-erro); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); transition: all 0.2s ease; }
-        .link-disque100:hover { background-color: #DC2626; transform: translateY(-2px); }
+        /* Estilos do Gravador */
+        .gravador-container { background: #F9FAFB; border: 2px dashed #D1D5DB; border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
+        .btn-gravar { background-color: var(--cor-erro); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 15px; cursor: pointer; margin: 10px 0; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-gravar:hover { background-color: #DC2626; transform: scale(1.05); }
+        .btn-parar { background-color: #1F2937; color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 15px; cursor: pointer; margin: 10px 0; display: none; align-items: center; gap: 8px; }
+        .btn-parar.ativo { display: inline-flex; animation: piscar 1.5s infinite; }
         
-        .logos-centro { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 30; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 10px 30px; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
-        .logo-seducpi { height: 60px; width: auto; object-fit: contain; transition: transform 0.3s ease; display: block; }
-        .logo-seducpi:hover { transform: scale(1.05); }
+        @keyframes piscar { 0% { opacity: 1; } 50% { opacity: 0.8; background-color: var(--cor-erro); } 100% { opacity: 1; } }
 
-        .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 100; background-color: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); transition: all 0.3s ease; }
-        .btn-whatsapp:hover { transform: scale(1.1) translateY(-2px); background-color: #128C7E; }
+        video { width: 100%; border-radius: 12px; background-color: #000; margin-top: 10px; display: none; }
+        audio { width: 100%; margin-top: 15px; display: none; }
+        
+        #video-preview-camera { display: none; transform: scaleX(-1); /* Efeito espelho para gravar */ }
+        #video-gravado { display: none; }
+
+        .btn-enviar { width: 100%; padding: 16px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px;}
+        .btn-enviar:hover { background-color: #1D4ED8; }
+        .btn-enviar:disabled { background-color: #9CA3AF; cursor: not-allowed; }
+
+        /* Botões Flutuantes Mantidos */
+        .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 100; background-color: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
+        .btn-disque-fixo { position: fixed; bottom: 20px; left: 20px; z-index: 30; }
+        .link-disque100 { background-color: var(--cor-erro); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); }
+        .logos-centro { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 30; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 10px 30px; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .logo-seducpi { height: 60px; width: auto; object-fit: contain; }
         
         @media (max-width: 850px) {
             .btn-disque-fixo { bottom: 100px; left: 50%; transform: translateX(-50%); width: max-content; }
@@ -79,10 +81,6 @@
 <body>
 
     <div class="fundo-grade"></div>
-
-    <a href="https://www.instagram.com/ceti_didacio_silva/" target="_blank" rel="noopener noreferrer" class="link-logo">
-        <img src="ceti.png" alt="CETI Logo" class="logo-escola" onerror="this.src='https://via.placeholder.com/100x40?text=Sua+Logo'">
-    </a>
 
     <button class="btn-menu" onclick="alternarMenu()"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
     <div class="overlay" id="fundoEscuro" onclick="alternarMenu()"></div>
@@ -105,64 +103,185 @@
             <button type="button" class="tab-btn" id="tab-libras" onclick="mudarAba('libras')">🤟 Libras</button>
         </div>
 
-        <form action="LINK_AQUI" method="POST" enctype="multipart/form-data">
+        <form id="formulario-denuncia">
             
             <div id="conteudo-texto" class="conteudo-aba ativo">
                 <label class="campo-label">Descreva o que aconteceu:</label>
-                <textarea name="relato_escrito" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
+                <textarea id="texto-relato" class="text-area-custom" placeholder="Você está seguro. Pode digitar sem se identificar..."></textarea>
             </div>
 
             <div id="conteudo-audio" class="conteudo-aba">
                 <label class="campo-label">Grave seu relato em áudio:</label>
-                <div class="file-input-container">
-                    <input type="file" name="relato_audio" accept="audio/*" capture="microphone">
+                <div class="gravador-container">
+                    <button type="button" class="btn-gravar" id="btn-gravar-audio" onclick="iniciarAudio()">🔴 Iniciar Gravação</button>
+                    <button type="button" class="btn-parar" id="btn-parar-audio" onclick="pararAudio()">⏹️ Finalizar Gravação</button>
+                    <audio id="player-audio" controls></audio>
+                    <p id="status-audio" style="font-size: 13px; color: #6B7280; margin-top: 10px;">Clique em gravar para começar.</p>
                 </div>
             </div>
 
             <div id="conteudo-libras" class="conteudo-aba">
-                <label class="campo-label">Grave seu vídeo em Libras:</label>
-                <div class="file-input-container">
-                    <input type="file" name="relato_video" accept="video/*" capture="environment">
+                <label class="campo-label">Grave seu relato em Libras:</label>
+                <div class="gravador-container">
+                    <button type="button" class="btn-gravar" id="btn-gravar-video" onclick="iniciarVideo()">🎥 Abrir Câmera e Gravar</button>
+                    <button type="button" class="btn-parar" id="btn-parar-video" onclick="pararVideo()">⏹️ Finalizar Vídeo</button>
+                    
+                    <video id="video-preview-camera" autoplay muted playsinline></video>
+                    <video id="video-gravado" controls playsinline></video>
+                    
+                    <p id="status-video" style="font-size: 13px; color: #6B7280; margin-top: 10px;">Grave seu vídeo sinalizando.</p>
                 </div>
             </div>
 
-            <button type="submit" class="btn-enviar">Enviar Relato de Forma Segura</button>
+            <button type="submit" class="btn-enviar" id="btn-submit">Enviar Relato de Forma Segura</button>
         </form>
     </div>
 
-    <a href="https://wa.me/5586994850192" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" title="Falar com a Polícia Escolar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-    </a>
-    <div class="btn-disque-fixo">
-        <a href="https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos" target="_blank" rel="noopener noreferrer" class="link-disque100">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-            Disque 100 - Denunciar Violação
-        </a>
-    </div>
-    <div class="logos-centro">
-        <a href="https://seduc.pi.gov.br/" target="_blank" rel="noopener noreferrer">
-            <img src="seducpi.png" alt="Seduc PI" class="logo-seducpi" onerror="this.src='https://via.placeholder.com/200x50?text=SEDUC+PI'">
-        </a>
-    </div>
+    <a href="https://wa.me/5586994850192" target="_blank" class="btn-whatsapp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></a>
+    <div class="btn-disque-fixo"><a href="#" class="link-disque100">Disque 100</a></div>
+    <div class="logos-centro"><img src="seducpi.png" class="logo-seducpi" alt="SEDUC"></div>
 
     <script>
+        // MUDANÇA DE ABAS
+        let abaAtiva = 'texto';
+        function mudarAba(aba) {
+            abaAtiva = aba;
+            ['texto', 'audio', 'libras'].forEach(id => {
+                document.getElementById(`tab-${id}`).classList.remove('ativo');
+                document.getElementById(`conteudo-${id}`).classList.remove('ativo');
+            });
+            document.getElementById(`tab-${aba}`).classList.add('ativo');
+            document.getElementById(`conteudo-${aba}`).classList.add('ativo');
+        }
         function alternarMenu() { document.getElementById('menuLateral').classList.toggle('ativa'); document.getElementById('fundoEscuro').classList.toggle('ativa'); }
 
-        function mudarAba(abaClicada) {
-            // Remove a classe ativo dos botões
-            document.getElementById('tab-texto').classList.remove('ativo');
-            document.getElementById('tab-audio').classList.remove('ativo');
-            document.getElementById('tab-libras').classList.remove('ativo');
-            
-            // Esconde todos os conteúdos
-            document.getElementById('conteudo-texto').classList.remove('ativo');
-            document.getElementById('conteudo-audio').classList.remove('ativo');
-            document.getElementById('conteudo-libras').classList.remove('ativo');
+        // VARIÁVEIS DE GRAVAÇÃO
+        let mediaRecorderAudio; let pedacosAudio = []; let blobAudioFinal = null;
+        let mediaRecorderVideo; let pedacosVideo = []; let blobVideoFinal = null; let streamVideoAtual = null;
 
-            // Ativa apenas a aba e o conteúdo clicado
-            document.getElementById(`tab-${abaClicada}`).classList.add('ativo');
-            document.getElementById(`conteudo-${abaClicada}`).classList.add('ativo');
+        // GRAVAÇÃO DE ÁUDIO
+        async function iniciarAudio() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorderAudio = new MediaRecorder(stream);
+                pedacosAudio = [];
+                
+                mediaRecorderAudio.ondataavailable = e => pedacosAudio.push(e.data);
+                mediaRecorderAudio.onstop = () => {
+                    blobAudioFinal = new Blob(pedacosAudio, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(blobAudioFinal);
+                    document.getElementById('player-audio').src = audioUrl;
+                    document.getElementById('player-audio').style.display = 'block';
+                    document.getElementById('status-audio').innerText = "✅ Áudio gravado! Você pode ouvir acima ou enviar.";
+                };
+
+                mediaRecorderAudio.start();
+                document.getElementById('btn-gravar-audio').style.display = 'none';
+                document.getElementById('btn-parar-audio').classList.add('ativo');
+                document.getElementById('player-audio').style.display = 'none';
+                document.getElementById('status-audio').innerText = "Gravando... Fale agora.";
+            } catch (err) { alert("Erro ao acessar microfone. Verifique as permissões do navegador."); }
         }
+
+        function pararAudio() {
+            mediaRecorderAudio.stop();
+            mediaRecorderAudio.stream.getTracks().forEach(track => track.stop());
+            document.getElementById('btn-parar-audio').classList.remove('ativo');
+            document.getElementById('btn-gravar-audio').style.display = 'inline-flex';
+            document.getElementById('btn-gravar-audio').innerText = "🔄 Gravar Novamente";
+        }
+
+        // GRAVAÇÃO DE VÍDEO (LIBRAS)
+        async function iniciarVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                streamVideoAtual = stream;
+                const videoCamera = document.getElementById('video-preview-camera');
+                videoCamera.srcObject = stream;
+                videoCamera.style.display = 'block';
+                document.getElementById('video-gravado').style.display = 'none';
+
+                mediaRecorderVideo = new MediaRecorder(stream);
+                pedacosVideo = [];
+                
+                mediaRecorderVideo.ondataavailable = e => pedacosVideo.push(e.data);
+                mediaRecorderVideo.onstop = () => {
+                    blobVideoFinal = new Blob(pedacosVideo, { type: 'video/webm' });
+                    const videoUrl = URL.createObjectURL(blobVideoFinal);
+                    document.getElementById('video-gravado').src = videoUrl;
+                    document.getElementById('video-gravado').style.display = 'block';
+                    videoCamera.style.display = 'none';
+                    document.getElementById('status-video').innerText = "✅ Vídeo gravado! Verifique acima antes de enviar.";
+                };
+
+                mediaRecorderVideo.start();
+                document.getElementById('btn-gravar-video').style.display = 'none';
+                document.getElementById('btn-parar-video').classList.add('ativo');
+                document.getElementById('status-video').innerText = "Gravando vídeo... Sinalize agora.";
+            } catch (err) { alert("Erro ao acessar a câmera. Verifique as permissões do navegador."); }
+        }
+
+        function pararVideo() {
+            mediaRecorderVideo.stop();
+            streamVideoAtual.getTracks().forEach(track => track.stop());
+            document.getElementById('btn-parar-video').classList.remove('ativo');
+            document.getElementById('btn-gravar-video').style.display = 'inline-flex';
+            document.getElementById('btn-gravar-video').innerText = "🔄 Gravar Novamente";
+        }
+
+        // ENVIO DO FORMULÁRIO COM O FORMSPREE
+        document.getElementById('formulario-denuncia').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Impede a página de recarregar
+            
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.innerText = "Enviando... Aguarde";
+            btnSubmit.disabled = true;
+
+            // COLE SEU LINK DO FORMSPREE AQUI DENTRO DAS ASPAS
+            const FORMSPREE_URL = "LINK_AQUI_DO_FORMSPREE";
+
+            let formData = new FormData();
+
+            if (abaAtiva === 'texto') {
+                const texto = document.getElementById('texto-relato').value;
+                if(!texto) { alert("Escreva algo antes de enviar."); btnSubmit.disabled = false; btnSubmit.innerText = "Enviar Relato"; return; }
+                formData.append('Relato_Escrito', texto);
+            } 
+            else if (abaAtiva === 'audio') {
+                if(!blobAudioFinal) { alert("Grave um áudio primeiro!"); btnSubmit.disabled = false; btnSubmit.innerText = "Enviar Relato"; return; }
+                formData.append('Relato_Audio', blobAudioFinal, 'denuncia_audio.webm');
+            } 
+            else if (abaAtiva === 'libras') {
+                if(!blobVideoFinal) { alert("Grave um vídeo primeiro!"); btnSubmit.disabled = false; btnSubmit.innerText = "Enviar Relato"; return; }
+                formData.append('Relato_Libras', blobVideoFinal, 'denuncia_libras.webm');
+            }
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    alert("✅ Relato enviado com sucesso para a equipe!\n\nVocê está seguro. Sua voz foi ouvida.");
+                    // Limpar campos
+                    document.getElementById('texto-relato').value = '';
+                    blobAudioFinal = null; blobVideoFinal = null;
+                    document.getElementById('player-audio').style.display = 'none';
+                    document.getElementById('video-gravado').style.display = 'none';
+                    document.getElementById('status-audio').innerText = "Clique em gravar para começar.";
+                    document.getElementById('status-video').innerText = "Grave seu vídeo sinalizando.";
+                } else {
+                    alert("❌ Ocorreu um erro ao enviar. Verifique se você colocou o link do Formspree corretamente no código.");
+                }
+            } catch (error) {
+                alert("❌ Erro de conexão ao tentar enviar.");
+            }
+
+            btnSubmit.innerText = "Enviar Relato de Forma Segura";
+            btnSubmit.disabled = false;
+        });
     </script>
 </body>
 </html>
