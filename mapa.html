@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Escolar - Restrito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cor-fundo: #F3F6F8; --cor-primaria: #2563EB; --cor-texto: #1F2937; --cor-card: #FFFFFF; --cor-borda: #E5E7EB; --alerta-critico: #EF4444; --alerta-medio: #F59E0B; --cor-erro: #EF4444; }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--cor-fundo); color: var(--cor-texto); margin: 0; padding: 80px 20px 100px 20px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; overflow-x: hidden; }
+
+        .fundo-grade { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('gradient.png'); background-size: cover; background-position: center; z-index: -3; pointer-events: none; opacity: 0.9; }
+        .luz-foco { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle at center, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%); border-radius: 50%; pointer-events: none; z-index: -2; opacity: 0; transition: opacity 0.3s ease; transform: translate(-50%, -50%); }
+
+        .link-logo { position: fixed; top: 20px; right: 20px; z-index: 1000; transition: transform 0.2s ease; }
+        .link-logo:hover { transform: scale(1.08); }
+        .logo-escola { max-width: 100px; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+
+        .btn-menu { position: fixed; top: 20px; left: 20px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 12px; width: 50px; height: 50px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100vh; background-color: var(--cor-card); box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); z-index: 1001; transition: left 0.3s ease; display: flex; flex-direction: column; }
+        .sidebar.ativa { left: 0; }
+        .sidebar-header { padding: 30px 20px; background-color: #F8FAFC; border-bottom: 1px solid var(--cor-borda); display: flex; justify-content: space-between; align-items: center; }
+        .sidebar-header h2 { margin: 0; color: var(--cor-primaria); font-size: 20px; }
+        .btn-fechar { background: none; border: none; font-size: 28px; color: #6B7280; cursor: pointer; }
+        .menu-links { list-style: none; padding: 0; margin: 0; }
+        .menu-links li { border-bottom: 1px solid #F3F4F6; }
+        .menu-links a { display: flex; align-items: center; gap: 15px; padding: 20px; text-decoration: none; color: var(--cor-texto); font-weight: 600; font-size: 16px; transition: background-color 0.2s; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .overlay.ativa { display: block; opacity: 1; }
+
+        .container-login { background-color: var(--cor-card); max-width: 400px; width: 100%; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border: 1px solid var(--cor-borda); position: relative; z-index: 50; text-align: center; margin-top: 40px; }
+        .container-login h1 { font-size: 40px; margin: 0 0 10px 0; }
+        .container-login h2 { color: var(--cor-erro); margin: 0 0 5px 0; }
+        .container-login p { color: var(--cor-texto-secundario); font-size: 14px; margin-bottom: 25px; line-height: 1.4; }
+        .container-login input { width: 100%; box-sizing: border-box; padding: 15px; border-radius: 12px; border: 2px solid var(--cor-borda); font-size: 16px; text-align: center; margin-bottom: 15px; font-family: 'Inter', sans-serif; transition: border-color 0.3s; }
+        .container-login input:focus { outline: none; border-color: var(--cor-erro); }
+        .btn-entrar { width: 100%; padding: 15px; background-color: var(--cor-texto); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        .btn-entrar:hover { background-color: var(--cor-erro); }
+
+        #dashboard-mapa { display: none; max-width: 950px; width: 100%; gap: 20px; grid-template-columns: 1.2fr 2fr; position: relative; z-index: 10; margin-top: 20px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card { background-color: rgba(255,255,255,0.9); backdrop-filter: blur(5px); border-radius: 16px; padding: 25px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border: 1px solid rgba(255,255,255,0.5); }
+        .card h2 { margin: 0 0 5px 0; color: var(--cor-texto); }
+        .subtitulo { color: #6B7280; font-size: 14px; margin-top: 0; margin-bottom: 25px; }
+        
+        .controles-tempo-real { display: flex; flex-direction: column; gap: 15px; }
+        .controle-box { background-color: #F9FAFB; padding: 15px; border-radius: 12px; border-left: 4px solid var(--cor-borda); display: flex; justify-content: space-between; align-items: center; }
+        .input-moderno { width: 70px; padding: 8px 12px; border: 2px solid var(--cor-borda); border-radius: 8px; font-size: 18px; font-weight: 700; text-align: center; }
+        .controle-box.ativo-baixo { border-left-color: var(--alerta-medio); }
+        .controle-box.ativo-alto { border-left-color: var(--alerta-critico); background-color: #FEF2F2; }
+
+        .planta-escola { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 120px); gap: 10px; position: relative; background-color: #E5E7EB; padding: 12px; border-radius: 12px; }
+        .comodo { background-color: #FFFFFF; border: 2px solid #D1D5DB; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #4B5563; position: relative; overflow: hidden; }
+        .comodo span { position: relative; z-index: 5; pointer-events: none; background: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 4px; }
+        
+        .patio { grid-column: 1 / span 3; grid-row: 2 / span 2; }
+        .banheiro { grid-column: 3; grid-row: 1; }
+        .biblioteca { grid-column: 2; grid-row: 1; }
+        .sala-aula { grid-column: 1; grid-row: 1; }
+        
+        .container-pontos { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .hotspot { position: absolute; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; pointer-events: auto; transform: scale(0); animation: pop-in 0.4s forwards; }
+        .hotspot.critico { background-color: var(--alerta-critico); animation: pop-in 0.4s forwards, pulse-critico 1.5s infinite 0.4s; }
+        .hotspot.atencao { background-color: var(--alerta-medio); animation: pop-in 0.4s forwards, pulse-atencao 2s infinite 0.4s; }
+        
+        @keyframes pop-in { to { transform: scale(1); } }
+        @keyframes pulse-critico { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        @keyframes pulse-atencao { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+
+        /* RODAPÉ E BOTÕES INFERIORES */
+        .btn-disque-fixo { position: fixed; bottom: 20px; left: 20px; z-index: 30; }
+        .link-disque100 { background-color: var(--cor-erro); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); transition: all 0.2s ease; }
+        .link-disque100:hover { background-color: #DC2626; transform: translateY(-2px); }
+        
+        .logos-centro { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 30; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 10px 30px; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
+        .logo-seducpi { height: 60px; width: auto; object-fit: contain; transition: transform 0.3s ease; display: block; }
+        .logo-seducpi:hover { transform: scale(1.05); }
+
+        /* BOTÃO WHATSAPP POLÍCIA ESCOLAR */
+        .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 100; background-color: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); transition: all 0.3s ease; }
+        .btn-whatsapp:hover { transform: scale(1.1) translateY(-2px); background-color: #128C7E; }
+        
+        @media (max-width: 850px) {
+            #dashboard-mapa { grid-template-columns: 1fr; }
+            .btn-disque-fixo { bottom: 100px; left: 50%; transform: translateX(-50%); width: max-content; }
+            .logos-centro { bottom: 15px; padding: 8px 20px; }
+            .logo-seducpi { height: 50px; }
+            body { padding-bottom: 180px; }
+            .btn-whatsapp { bottom: 90px; right: 15px; width: 50px; height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fundo-grade"></div>
+    <div class="luz-foco" id="luzFoco"></div>
+
+    <a href="https://www.instagram.com/ceti_didacio_silva/" target="_blank" rel="noopener noreferrer" class="link-logo">
+        <img src="ceti.png" alt="Logo" class="logo-escola" onerror="this.src='https://via.placeholder.com/100x40?text=Sua+Logo'">
+    </a>
+
+    <button class="btn-menu" onclick="alternarMenu()"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <div class="overlay" id="fundoEscuro" onclick="alternarMenu()"></div>
+    <nav class="sidebar" id="menuLateral">
+        <div class="sidebar-header"><h2>Voz Segura</h2><button class="btn-fechar" onclick="alternarMenu()">&times;</button></div>
+        <ul class="menu-links">
+            <li><a href="index.html"><span>📢</span> Fazer Denúncia</a></li>
+            <li><a href="chatbot.html"><span>🤖</span> Chatbot Aliado</a></li>
+            <li><a href="mapa.html"><span>🔒</span> Mapa Escolar</a></li>
+        </ul>
+    </nav>
+
+    <div class="container-login" id="tela-login">
+        <h1>🔒</h1>
+        <h2>Acesso Restrito</h2>
+        <p>Área exclusiva da Coordenação. Digite a senha para acessar os dados do Mapa de Calor.</p>
+        
+        <input type="password" id="senhaMapa" placeholder="Senha de acesso..." onkeypress="verificarEnterSenha(event)">
+        <p id="erroSenha" style="color: var(--cor-erro); font-size: 13px; font-weight: 600; display: none; margin-top: -5px; margin-bottom: 15px;">Senha incorreta. Tente novamente.</p>
+        
+        <button class="btn-entrar" onclick="acessarMapa()">Desbloquear Mapa</button>
+    </div>
+
+    <div id="dashboard-mapa">
+        <div class="card">
+            <header>
+                <h2 style="color: var(--cor-primaria);">Controle em Tempo Real</h2>
+                <p class="subtitulo">Simulador de Alertas (Edite os números)</p>
+            </header>
+            <div class="controles-tempo-real">
+                <div class="controle-box" id="box-banheiro">
+                    <h3>Banheiros</h3>
+                    <input type="number" id="input-banheiro" class="input-moderno" value="6" min="0" oninput="atualizarMapa('banheiro')">
+                </div>
+                <div class="controle-box" id="box-patio">
+                    <h3>Pátio Central</h3>
+                    <input type="number" id="input-patio" class="input-moderno" value="2" min="0" oninput="atualizarMapa('patio')">
+                </div>
+                <div class="controle-box" id="box-sala-aula">
+                    <h3>Salas de Aula</h3>
+                    <input type="number" id="input-sala-aula" class="input-moderno" value="0" min="0" oninput="atualizarMapa('sala-aula')">
+                </div>
+                <div class="controle-box" id="box-biblioteca">
+                    <h3>Biblioteca</h3>
+                    <input type="number" id="input-biblioteca" class="input-moderno" value="0" min="0" oninput="atualizarMapa('biblioteca')">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Mapa de Calor Escolar</h2>
+            <p class="subtitulo">Visão atual do campus baseada nas denúncias.</p>
+            
+            <div class="planta-escola">
+                <div class="comodo sala-aula" id="mapa-sala-aula"><span>Salas</span><div class="container-pontos"></div></div>
+                <div class="comodo biblioteca" id="mapa-biblioteca"><span>Biblioteca</span><div class="container-pontos"></div></div>
+                <div class="comodo banheiro" id="mapa-banheiro"><span>Banheiros</span><div class="container-pontos"></div></div>
+                <div class="comodo patio" id="mapa-patio"><span>Pátio Central</span><div class="container-pontos"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/5586994850192" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" title="Falar com a Polícia Escolar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="currentColor">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+    </a>
+
+    <div class="btn-disque-fixo">
+        <a href="https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos" target="_blank" rel="noopener noreferrer" class="link-disque100">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+            Disque 100 - Denunciar Violação
+        </a>
+    </div>
+
+    <div class="logos-centro">
+        <a href="https://seduc.pi.gov.br/" target="_blank" rel="noopener noreferrer">
+            <img src="seducpi.png" alt="Seduc e Governo do Piauí" class="logo-seducpi" onerror="this.src='https://via.placeholder.com/200x50?text=SEDUC+PI'">
+        </a>
+    </div>
+
+    <script>
+        function alternarMenu() { document.getElementById('menuLateral').classList.toggle('ativa'); document.getElementById('fundoEscuro').classList.toggle('ativa'); }
+
+        const luzFoco = document.getElementById('luzFoco');
+        document.addEventListener('mousemove', (e) => { luzFoco.style.opacity = '1'; luzFoco.style.left = `${e.clientX}px`; luzFoco.style.top = `${e.clientY}px`; });
+
+        function acessarMapa() {
+            const senhaInput = document.getElementById('senhaMapa').value;
+            if (senhaInput === 'coord123') {
+                document.getElementById('tela-login').style.display = 'none';
+                const gridMapa = document.getElementById('dashboard-mapa');
+                if(window.innerWidth <= 850) { gridMapa.style.display = 'grid'; } 
+                else { gridMapa.style.display = 'grid'; }
+                atualizarMapa('banheiro'); 
+                atualizarMapa('patio');
+            } else {
+                document.getElementById('erroSenha').style.display = 'block';
+            }
+        }
+
+        function verificarEnterSenha(e) {
+            if (e.key === 'Enter') acessarMapa();
+        }
+
+        function atualizarMapa(setor) {
+            const inputElement = document.getElementById(`input-${setor}`); 
+            const boxElement = document.getElementById(`box-${setor}`);
+            const containerPontos = document.querySelector(`#mapa-${setor} .container-pontos`);
+            
+            let quantidade = parseInt(inputElement.value);
+            if (isNaN(quantidade) || quantidade < 0) quantidade = 0; if (quantidade > 20) quantidade = 20; 
+
+            boxElement.className = 'controle-box'; 
+            if (quantidade >= 5) boxElement.classList.add('ativo-alto');
+            else if (quantidade > 0) boxElement.classList.add('ativo-baixo');
+
+            containerPontos.innerHTML = '';
+            for(let i = 0; i < quantidade; i++) {
+                const ponto = document.createElement('div');
+                const classeCor = quantidade >= 5 ? 'critico' : 'atencao';
+                ponto.classList.add('hotspot', classeCor);
+                ponto.style.top = `${Math.floor(Math.random() * 80) + 10}%`; ponto.style.left = `${Math.floor(Math.random() * 80) + 10}%`;
+                ponto.onclick = () => alert(`🚨 Detalhes do Incidente:\nSetor: ${setor.toUpperCase()}`);
+                containerPontos.appendChild(ponto);
+            }
+        }
+    </script>
+</body>
+</html>
